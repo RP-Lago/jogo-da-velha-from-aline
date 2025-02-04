@@ -1,28 +1,71 @@
-## Jogo da Velha Colaborativo
+# Jogo da Velha V1.1
 
-Este é um projeto colaborativo de um jogo super clássico, e que espero que vocês já tenham jogado um dia. O objetivo é fornecer uma oportunidade para aqueles que desejam aprender sobre colaboração em projetos open source. O jogo está passando por ajustes no seu visual, então, em breve teremos uma interface bem mais agradável. No entanto, sugiro que aqueles que tenham interesse e conheçam HTML, CSS e JavaScript realizem uma cópia do projeto e personalizem ao seu modo.
+## Descrição
 
-Tenho certeza que irá ficar muito bom! E se surgirem dúvidas, podem contar comigo \o/
+Este é um jogo da velha interativo desenvolvido com HTML, CSS e JavaScript. Permite que dois jogadores se enfrentem em partidas personalizáveis, com registro de jogadores, seleção de gênero, definição do número de partidas e destaque visual dos vencedores.
 
-## Sobre o Jogo
+Este projeto é um **fork** do repositório original desenvolvido por [Aline Antunes](https://github.com/alinealien) ([LinkedIn](https://www.linkedin.com/in/aline-antunes-a908a6174/)). Realizei diversas alterações e adições para aprimorar a experiência do usuário e adicionar novas funcionalidades.
 
-O jogo da velha é um passatempo clássico que envolve dois jogadores, X e O, que alternam entre marcar espaços em uma grade 3x3. O objetivo é formar uma linha horizontal, vertical ou diagonal com três marcadores iguais antes do adversário.
+## Funcionalidades
 
-## Como Contribuir
+*   **Registro de Jogadores:**
+    *   Os jogadores devem inserir seus nomes antes de iniciar o jogo.
+    *   É possível selecionar o gênero dos jogadores (Masculino, Feminino, Outro(a)). A imagem do jogador é alterada para `jogador4.png` quando o gênero "Outro(a)" é selecionado.
+    *   Os jogadores devem escolher entre "X" ou "O" para determinar suas peças no jogo.
+*   **Definição do Número de Partidas:**
+    *   É possível definir o número de partidas a serem jogadas para determinar um vencedor final.
+*   **Jogabilidade:**
+    *   Interface intuitiva do jogo da velha com nove casas.
+    *   Alternância automática entre os jogadores.
+    *   Detecção automática de vitórias e empates.
+*   **Destaque Visual:**
+    *   A sequência vencedora é destacada em uma cor diferente.
+    *   A imagem do jogador vencedor é destacada com um breve zoom.
+*   **Vencedor Final:**
+    *   Ao final do número definido de partidas, um modal exibe o nome do grande vencedor.
+*   **Responsividade:**
+    *   O layout do jogo se adapta a diferentes tamanhos de tela, proporcionando uma boa experiência tanto em desktops quanto em dispositivos móveis.
 
-Se você deseja contribuir para este projeto, fique à vontade para realizar issues e pull requests. Aqui estão algumas maneiras pelas quais você pode ajudar:
+## Como Usar
 
-    1. Implementar novos recursos ou melhorias no jogo.
-    2. Corrigir bugs ou problemas existentes.
-    3. Aprimorar a interface do usuário com CSS.
-    4. Documentar o código ou adicionar comentários para facilitar a compreensão.
+1.  **Clone o repositório:**
 
-Como Começar
+    ```bash
+    git clone <URL_DO_REPOSITORIO>
+    ```
 
-    1. Faça um fork deste repositório.
-    2. Clone o fork para o seu ambiente local.
-    3. Implemente suas alterações ou adições.
-    4. Faça commit e push para o seu fork.
-    5. Envie um pull request para revisão.
+2.  **Abra o arquivo `index.html` em seu navegador web.**
+
+3.  **Registro de Jogadores:**
+
+    *   Preencha os nomes dos jogadores.
+    *   Selecione o gênero de cada jogador.
+    *   Escolha "X" ou "O" para o Jogador 1. O Jogador 2 receberá automaticamente a peça restante.
+    *   Defina o número de partidas a serem jogadas.
+    *   Clique em "Iniciar Jogo".
+
+4.  **Jogando:**
+
+    *   Clique em uma casa vazia no tabuleiro para colocar sua peça.
+    *   O jogo alternará automaticamente para o próximo jogador.
+    *   O jogo detectará automaticamente quando houver um vencedor ou um empate.
+
+5.  **Reiniciando:**
+
+    *   Clique no botão "Reiniciar" para iniciar um novo jogo e voltar para a tela de registro.
+
+## Estrutura do Projeto
 
 
+## Créditos
+
+*   Baseado no projeto original de [Aline Antunes](https://github.com/alinealien) ([LinkedIn](https://www.linkedin.com/in/aline-antunes-a908a6174/)).
+*   Adaptado e aprimorado por [SEU NOME AQUI] ([SEU LINKEDIN AQUI]).
+
+## Licença
+
+Este projeto está sob a licença [MIT License](LICENSE).
+
+## Comentários e Contribuições
+
+Este projeto foi desenvolvido para fins de aprendizado e demonstração.  Contribuições e sugestões são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.

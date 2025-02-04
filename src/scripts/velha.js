@@ -1,190 +1,249 @@
-var jogador, vencedor = null;
-var jogadorSelecionado = document.getElementById('jogador-selecionado');
-var vencedorSelecionado = document.getElementById('vencedor-selecionado');
+let jogador = "X";
+let vencedor = null;
+let jogadores = {};
+let player1Wins = 0;
+let player2Wins = 0;
+let partidasJogadas = 0;
+let numPartidas = 1;
 
-mudarJogador('X');
+document.addEventListener('DOMContentLoaded', function() {
+    reiniciarTudo(); // Abre a tela de registro ao carregar a página
+});
+
+function iniciarJogo() {
+    const player1Name = document.getElementById('player1-name-modal').value.trim();
+    const player2Name = document.getElementById('player2-name-modal').value.trim();
+    const player1Gender = document.getElementById('player1-gender').value;
+    const player2Gender = document.getElementById('player2-gender').value;
+    const player1Piece = document.querySelector('input[name="player1-piece"]:checked');
+    numPartidas = parseInt(document.getElementById('num-partidas').value);
+
+    if (!player1Name || !player2Name) {
+        alert("Por favor, preencha o nome de ambos os jogadores.");
+        return;
+    }
+
+    if (!player1Piece) {
+        alert("Por favor, selecione a peça para o Jogador 1 (X ou O).");
+        return;
+    }
+
+    let piece1 = player1Piece.value;
+    let piece2 = piece1 === 'X' ? 'O' : 'X';
+
+    jogadores = {
+        player1: {
+            id: generateId(),
+            name: player1Name,
+            piece: piece1,
+            gender: player1Gender,
+            wins: 0,
+        },
+        player2: {
+            id: generateId(),
+            name: player2Name,
+            piece: piece2,
+            gender: player2Gender,
+            wins: 0
+        }
+    }
+
+    atualizarDadosJogadores()
+    document.getElementById('modal-registro').style.display = 'none';
+    partidasJogadas = 0; // Reseta as partidas jogadas
+    player1Wins = 0;
+    player2Wins = 0;
+    atualizarPlacar();
+
+}
+
+function generateId() {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+}
+
+function atualizarDadosJogadores() {
+    document.getElementById('player1-display').textContent = jogadores.player1.name;
+    document.getElementById('player2-display').textContent = jogadores.player2.name;
+    document.getElementById('player1-piece').textContent = jogadores.player1.piece;
+    document.getElementById('player2-piece').textContent = jogadores.player2.piece;
+     document.querySelector('.jogador1 .jogador-icon').src = `src/assets/jogador${getJogadorIcon(jogadores.player1.gender)}.png`;
+     document.querySelector('.jogador2 .jogador-icon').src = `src/assets/jogador${getJogadorIcon(jogadores.player2.gender)}.png`;
+
+    jogador = jogadores.player1.piece;
+    document.getElementById('jogador-selecionado').textContent = jogador;
+}
+
+function getJogadorIcon(gender) {
+    switch (gender) {
+        case 'male':
+            return 1;
+        case 'female':
+            return 2;
+        case 'outro(a)':
+            return 4;
+        default:
+            return 3;
+    }
+}
 
 function escolherQuadrado(id) {
-   
     if (vencedor !== null) {
         return;
     }
 
-    var quadrado = document.getElementById(id);
-    if (quadrado.innerHTML !== '-') {
+    const quadrado = document.getElementById(id);
+    if (quadrado.textContent !== "-") {
         return;
     }
 
-    quadrado.innerHTML = jogador;
-    quadrado.style.color = 'rgba(176, 52, 117)';
+    quadrado.textContent = jogador;
+    quadrado.style.color = 'white';
 
-    if (jogador === 'X') {
-        jogador = 'O';
-    } else {
-        jogador = 'X';
+    const linhaVencedora = verificarVencedor();
+     if (linhaVencedora) {
+        vencedor = jogador;
+       document.getElementById('vencedor-selecionado').textContent = `O vencedor é ${jogadores.player1.piece === jogador ? jogadores.player1.name : jogadores.player2.name}`;
+        destacarVitoria(linhaVencedora);
+         updateWins();
+        destacarJogadorVencedor();
+        partidasJogadas++;
+       setTimeout(()=>{
+           reiniciarJogoAtual()
+       }, 1500) // Reinicia apos 1,5 segundos
+        setTimeout(()=> {
+            verificarVencedorFinal();
+        }, 2000); // Espera 2 segundos antes de exibir o vencedor final
+
+        return;
     }
 
-    mudarJogador(jogador);
-    checaVencedor();
+
+    if (verificarEmpate()) {
+        vencedor = 'empate';
+        document.getElementById('vencedor-selecionado').textContent = 'Empate!';
+        partidasJogadas++;
+         setTimeout(()=>{
+           reiniciarJogoAtual()
+       }, 1500)
+         setTimeout(()=> {
+            verificarVencedorFinal();
+        }, 2000);
+        return;
+    }
+    jogador = jogador === jogadores.player1.piece ? jogadores.player2.piece : jogadores.player1.piece;
+    document.getElementById('jogador-selecionado').textContent = jogador;
+}
+function destacarVitoria(linha) {
+  linha.forEach(id => {
+      document.getElementById(id).classList.add('vencedor-quadrado');
+    });
+}
+function removerDestaque(linha) {
+     linha.forEach(id => {
+      document.getElementById(id).classList.remove('vencedor-quadrado');
+    });
+}
+function verificarVencedor() {
+    const v = [
+        [1, 2, 3], [4, 5, 6], [7, 8, 9],
+        [1, 4, 7], [2, 5, 8], [3, 6, 9],
+        [1, 5, 9], [3, 5, 7]
+    ];
+
+    for (let i = 0; i < v.length; i++) {
+        const [a, b, c] = v[i];
+        const quadradoA = document.getElementById(a).textContent;
+        const quadradoB = document.getElementById(b).textContent;
+        const quadradoC = document.getElementById(c).textContent;
+
+        if (quadradoA === jogador && quadradoB === jogador && quadradoC === jogador) {
+            return v[i];
+        }
+    }
+    return false;
 }
 
-function mudarJogador(valor) {
-    jogador = valor;
-    jogadorSelecionado.innerHTML = jogador;
+function verificarEmpate() {
+    for (let i = 1; i <= 9; i++) {
+        if (document.getElementById(i).textContent === "-") {
+            return false;
+        }
+    }
+    return true;
 }
 
-
-function checaVencedor(){
-    var quadrado1 = document.getElementById(1);
-    var quadrado2 = document.getElementById(2);
-    var quadrado3 = document.getElementById(3);
-    var quadrado4 = document.getElementById(4);
-    var quadrado5 = document.getElementById(5);
-    var quadrado6 = document.getElementById(6);
-    var quadrado7 = document.getElementById(7);
-    var quadrado8 = document.getElementById(8);
-    var quadrado9 = document.getElementById(9);
-
-    if (checaSequencia(quadrado1, quadrado2, quadrado3)) {
-        mudaCorQuadrado(quadrado1, quadrado2, quadrado3);
-        mudarVencedor(quadrado1);
-        return;
+function updateWins() {
+    if (vencedor === jogadores.player1.piece) {
+        player1Wins++;
+        document.getElementById('player1-wins').textContent = player1Wins;
+         jogadores.player1.wins = player1Wins;
+    } else if (vencedor === jogadores.player2.piece) {
+        player2Wins++;
+         document.getElementById('player2-wins').textContent = player2Wins;
+        jogadores.player2.wins = player2Wins;
     }
-
-    if (checaSequencia(quadrado4, quadrado5, quadrado6)) {
-        mudaCorQuadrado(quadrado4, quadrado5, quadrado6);
-        mudarVencedor(quadrado4);
-        return;
-    }
-
-    if (checaSequencia(quadrado7, quadrado8, quadrado9)) {
-        mudaCorQuadrado(quadrado7, quadrado8, quadrado9);
-        mudarVencedor(quadrado7);
-        return;
-    }
-
-    if (checaSequencia(quadrado1, quadrado4, quadrado7)) {
-        mudaCorQuadrado(quadrado1, quadrado4, quadrado7);
-        mudarVencedor(quadrado1);
-        return;
-    }
-
-    if (checaSequencia(quadrado2, quadrado5, quadrado8)) {
-        mudaCorQuadrado(quadrado2, quadrado5, quadrado8);
-        mudarVencedor(quadrado2);
-        return;
-    }
-
-    if (checaSequencia(quadrado3, quadrado6, quadrado9)) {
-        mudaCorQuadrado(quadrado3, quadrado6, quadrado9);
-        mudarVencedor(quadrado3);
-        return;
-    }
-
-    if (checaSequencia(quadrado1, quadrado5, quadrado9)) {
-        mudaCorQuadrado(quadrado1, quadrado5, quadrado9);
-        mudarVencedor(quadrado1);
-        return;
-    }
-
-    if (checaSequencia(quadrado3, quadrado5, quadrado7)) {
-        mudaCorQuadrado(quadrado3, quadrado5, quadrado7);
-        mudarVencedor(quadrado3);
-    }
-
-     
-    if (checaSequencia(quadrado1, quadrado2, quadrado3)) {
-        mudaCorQuadrado(quadrado1, quadrado2, quadrado3);
-        mudarVencedor(quadrado1);
-        exibirAlertaVencedor(quadrado1.innerHTML); // Chamada corrigida
-        return;
-    }
-} 
-
-
-function mudarVencedor(quadrado) {
-    vencedor = quadrado.innerHTML;
-    vencedorSelecionado.innerHTML = vencedor;
 }
-
-function mudaCorQuadrado(quadrado1, quadrado2, quadrado3) {
-    quadrado1.style.background = 'rgba(52, 176, 117, 0.7)'; // cor de destaque para o fundo
-    quadrado1.style.color = 'rgba(9, 53, 115, 0.5)'; // cor de destaque para o texto
-    quadrado2.style.background = 'rgba(52, 176, 117, 0.7)';
-    quadrado2.style.color = 'rgba(9, 53, 115, 0.5)';
-    quadrado3.style.background = 'rgba(52, 176, 117, 0.7)';
-    quadrado3.style.color = 'rgba(9, 53, 115, 0.5)';
+function destacarJogadorVencedor() {
+     const jogadorIcon = vencedor === jogadores.player1.piece ? document.getElementById('player1-icon') : document.getElementById('player2-icon');
+    jogadorIcon.classList.add('jogador-icon-destaque');
+    setTimeout(() => {
+        jogadorIcon.classList.remove('jogador-icon-destaque');
+    }, 1000);
 }
-
-function checaSequencia(quadrado1, quadrado2, quadrado3) {
-    var eigual = false;
-
-    if (quadrado1.innerHTML !== '-' && quadrado1.innerHTML === quadrado2.innerHTML && quadrado2.innerHTML === quadrado3.innerHTML) {
-        eigual = true;
+function reiniciarJogoAtual() {
+     if(vencedor !== 'empate'){
+        const linha = verificarVencedor();
+           if(linha){
+            removerDestaque(linha);
+        }
     }
-
-    return eigual;
-}
-
-function reiniciar()
-{
     vencedor = null;
-    vencedorSelecionado.innerHTML = '';
-
-    for (var i = 1; i <= 9; i++) {
-        var quadrado = document.getElementById(i);
-        quadrado.style.background = 'rgba(9, 53, 115, 0.5)';
-        quadrado.style.color = 'rgba(9, 53, 115, 0.0)';
-        quadrado.innerHTML = '-';
+    for (let i = 1; i <= 9; i++) {
+        document.getElementById(i).textContent = "-";
+         document.getElementById(i).style.color = 'rgba(9, 53, 115, 0.0)';
     }
+    document.getElementById('vencedor-selecionado').textContent = "";
+    document.getElementById('jogador-selecionado').textContent = jogador;
+}
+function reiniciarTudo() {
+     document.getElementById('modal-registro').style.display = 'flex';
+       reiniciarJogoAtual()
+        player1Wins = 0;
+        player2Wins = 0;
+        partidasJogadas = 0;
+        document.getElementById('player1-wins').textContent = player1Wins;
+        document.getElementById('player2-wins').textContent = player2Wins;
+        document.getElementById('player1-name-modal').value = "";
+        document.getElementById('player2-name-modal').value = "";
+        document.getElementById('num-partidas').value = 1;
+        document.querySelector('input[name="player1-piece"]:checked').checked = false;
+        document.getElementById('player1-gender').value = "Selecione";
+        document.getElementById('player2-gender').value = "Selecione";
 
-    mudarJogador('X');
+        atualizarPlacar();
 }
 
-var jogador1 = {
-    nome: '',
-    peca: ''
-};
+function verificarVencedorFinal() {
+    if (partidasJogadas >= numPartidas) {
+          let vencedorFinal = '';
+        if(jogadores.player1.wins > jogadores.player2.wins) {
+            vencedorFinal = jogadores.player1.name;
+        }else if(jogadores.player1.wins < jogadores.player2.wins) {
+            vencedorFinal = jogadores.player2.name;
+        } else {
+             vencedorFinal = 'Empate';
+        }
 
-var jogador2 = {
-    nome: '',
-    peca: ''
-};
+      document.getElementById('vencedor-final-text').textContent = `O grande vencedor das partidas foi: ${vencedorFinal}!`;
+        document.getElementById('modal-vencedor-final').style.display = 'flex';
 
-
-function solicitarNomeJogador(numeroJogador) {
-    var nome = prompt("Por favor, insira o nome do Jogador " + numeroJogador);
-    if (nome != null) {
-        document.querySelector(".jogador" + numeroJogador + " p").textContent = nome;
     }
-    
-    
+}
+function fecharModalFinal() {
+    document.getElementById('modal-vencedor-final').style.display = 'none';
 }
 
-function solicitarPecaJogador(numeroJogador) {
-    var peca = '';
-    while (peca.toUpperCase() !== 'X' && peca.toUpperCase() !== 'O') {
-        peca = prompt("Jogador " + numeroJogador + ", por favor escolha X ou O:");
-    }
-    document.querySelector(".jogador" + numeroJogador + " .peca-jogador").textContent = "Peça: " + peca.toUpperCase();
-    return peca.toUpperCase();
-}
-
-function exibirAlertaVencedor(nome) {
-    alert("O vencedor é: " + nome);
-}
-
-
-window.onload = function() {
-    solicitarNomeJogador(1);
-    solicitarNomeJogador(2);
-
-    var pecaJogador1 = solicitarPecaJogador(1);
-    var pecaJogador2 = pecaJogador1 === 'X' ? 'O' : 'X'; // O jogador 2 recebe a peça que não foi escolhida pelo jogador 1
-
-    // Definir a peça do Jogador 2
-    document.querySelector(".jogador2 .peca-jogador").textContent = "Peça: " + pecaJogador2;
-
-    console.log("Jogador 1 escolheu " + pecaJogador1);
-    console.log("Jogador 2 é " + pecaJogador2);
+function atualizarPlacar() {
+    document.getElementById('player1-wins').textContent = player1Wins;
+    document.getElementById('player2-wins').textContent = player2Wins;
 }

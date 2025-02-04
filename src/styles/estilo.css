@@ -1,153 +1,282 @@
-body {
-    overflow: hidden;
-    font-family: Consolas,monaco,monospace; 
-    background: linear-gradient(to right, #D1347B 30%, #093573 95%); /* Adiciona um gradiente de cor */
+:root {
+    --cor-primaria: #5351e4;
+    --cor-media: #8f7633;
+    --cor-secundaria: #394738;
+    --cor-fundo: linear-gradient(to bottom, var(--cor-primaria) 30%, var(--cor-media) 70%, var(--cor-secundaria) 95%);
+    --cor-texto: white;
+    --cor-borda: rgba(255, 255, 255, 0.3);
+    --cor-destaque: rgba(52, 176, 117, 0.7);
+    --cor-vitoria: #2ecc71; /* Cor para destacar a vitória */
 }
 
-.navbar{
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Consolas, monaco, monospace;
+    background: var(--cor-fundo);
+    color: var(--cor-texto);
     display: flex;
     justify-content: center;
-    justify-items: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.navbar {
+    position: absolute;
+    top: 0;
+    left: 0; /* Adicionado para alinhar à esquerda */
+    width: 100%;
     background-color: rgba(9, 53, 115, 0.5);
-}
-
-.icon-logo-img, img{
-    margin-top: 1%;
-    margin-bottom: 1%;
-    margin-left: 1%;
-    display: inline-block;
-   
-}
-
-.container1-quadrado {
+    padding: 10px 20px; /* Adicionado padding para espaçamento interno */
     display: flex;
-    width: 100px; 
-    height: 100px;
-    margin-bottom: 45px;
-    margin-top: 5%;
+    align-items: center;
 }
 
-.container2-quadrado {
+.tituloTxt {
+    font-size: 24px;
+    margin: 0;
+    margin-left: 10px; /* Espaçamento entre a logo e o texto */
+}
+
+.icon-logo {
+  height: 50px; /* Ajuste o tamanho conforme necessário */
+  margin-right: 10px; /* Adiciona um espaço à direita da logo */
+}
+
+
+.container {
     display: flex;
-    width: 100px; 
-    height: 100px;
-    margin-bottom: 45px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
 }
 
-.container3-quadrado {
-    display: flex;
-    width: 100px; 
-    height: 100px;
-    margin-bottom: 3%;
-}
-
-.container{
-   display: inline-block;
-   padding: 10px;   
+.tabuleiro {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .quadrado {
-    justify-content: center;
-    align-items: flex-start; 
     width: 100px;
     height: 100px;
     background-color: rgba(9, 53, 115, 0.5);
-    display: inline-block;
-    padding: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 60px;
-    margin: 5px;
     cursor: pointer;
     color: rgba(9, 53, 115, 0.0);
-    flex-wrap: wrap;
+    border: 2px solid var(--cor-borda);
+    border-radius: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.container-pai{
-    display: flex-end;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: -7%;
+.quadrado:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+}
+.vencedor-quadrado{
+        background-color: var(--cor-vitoria);
+         color: white !important;
 }
 
 .container-jogadores {
-    order: 1;
     display: flex;
-    margin-top: -8%;
-    justify-content: flex-end; 
-    align-items: center;
-    margin-right: 10%;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 20px;
 }
 
-.container-info-jogadores{
-    order: 2;
-    display: inline-block;
-    
-    padding: 50px;
-    border: 1px solid white;
-    border-radius: 2%;
-    list-style-type: none;
-
-    margin-left: 65%;
-    margin-right: auto;
-    width: 20%;
-
-    margin-top: -8%;
-    
-}
-
-
-.jogador1, 
-.jogador2, 
-.vencedor{
-    color: white;
-    font-size: 20px;
-    display: flex;
-}
-
-
-button{
-    background-color: transparent;
-    font-size: 20px;
-    margin-top: 5%;
-    width: 100px;
-    height: 30px;
-    cursor: pointer;
-    color: white;
-    border: 1px solid white;
-}
-
-.button-class{
-    border-radius: 10%;
-}
-
-
-
-.jogador{
+.jogador {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
-    margin-top: -20%;
-    padding: 10px;
-    margin-right: 80px;
-    margin-left: 80px;
-    margin-bottom: 15%;
+    margin: 0 20px;
+    text-align: center; /* Centraliza o texto dos jogadores */
+}
+.nome-jogador{
+    font-size: 1.2em; /* Ajuste o tamanho do texto */
+    margin-bottom: 5px; /* Espaço abaixo do nome */
 }
 
 .jogador-icon {
-    width: 150px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+    transition: transform 0.3s;
+}
+.jogador-icon-destaque {
+    transform: scale(1.2);
+}
+.container-info-jogadores {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.info {
+    margin: 10px 0;
+}
+
+button {
+    background-color: transparent;
+    font-size: 1rem;
+    margin-top: 10px;
+    width: 100px;
+    height: 30px;
+    cursor: pointer;
+    color: var(--cor-texto);
+    border: 1px solid var(--cor-texto);
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.velhaL {
+    position: absolute;
+    bottom: 0;
+    left: 0;
     height: 150px;
 }
 
-p{
-    margin-top: 30px;
+.velhaR {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 150px;
 }
 
-.tituloTxt{
-    display: flex;
+/* Modal de Registro */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
     justify-content: center;
     align-items: center;
+}
+.modal-content {
+    background-color: rgba(9, 53, 115, 0.8); /* Cor de fundo do modal */
+    margin: auto;
+    padding: 25px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 10px;
     text-align: center;
-    color: rgb(255, 255, 245);
+}
+.cor_player{
+    background-color: rgba(9, 53, 115, 0.8);
+
 }
 
+.registro-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.input-group{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+.input-group-p{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    justify-content: apace-around;
+    font-size: 1.5rem;
+}
+
+.input-group-p {
+    display: flex;
+    align-items: center;
+     margin-bottom: 10px;
+}
+
+.input-group-p input[type="radio"] {
+     margin-right: 3px;
+}
+
+.piece-label {
+  margin-right: 10px; /* Espaço entre a letra e o próximo radio */
+  margin-left: 2px;
+}
+
+.input-group label,
+.input-group select{
+    margin-bottom: 15px;
+}
+
+
+.input-group input,
+.input-group select{
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid var(--cor-borda);
+    background-color: rgba(201, 216, 30, 0.1);
+    color: var(--cor-texto);
+    text-align: center;
+    margin-bottom: 10px;
+
+}
+.input-group label {
+  font-size: 1.5rem;
+  color: var(--cor-texto); /* Texto Branco */
+  margin-bottom: 5px;
+}
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tabuleiro {
+        margin-bottom: 20px;
+    }
+    .container-jogadores{
+         flex-direction: row;
+          justify-content: center;
+         margin-top: 10px;
+    }
+    .jogador {
+        margin: 10px;
+    }
+
+    .container-info-jogadores {
+        margin-top: 20px;
+    }
+
+    .velhaL,
+    .velhaR {
+        display: none; /* Oculta as velhas em telas menores */
+        bottom: 10%;
+        right: 10%;
+        height: 200px;
+    }
+
+}
