@@ -6,6 +6,13 @@ Este é um jogo da velha interativo desenvolvido com HTML, CSS e JavaScript. Per
 
 Este projeto é um **fork** do repositório original desenvolvido por [Aline Antunes](https://github.com/alinealien) ([LinkedIn](https://www.linkedin.com/in/aline-antunes-a908a6174/)). Realizei diversas alterações e adições para aprimorar a experiência do usuário e adicionar novas funcionalidades.
 
+## Imagens do Jogo.
+
+![Captura de tela 2025-02-04 035336](https://github.com/user-attachments/assets/be46bdf2-0d6d-47a4-bf55-5c484047a618) ![Captura de tela 2025-02-04 035325](https://github.com/user-attachments/assets/b59611a6-8452-469b-b573-2107c317e683)
+
+
+![Captura de tela 2025-02-04 035101](https://github.com/user-attachments/assets/96583df7-be5a-48ec-8dcd-71cd80a68075)
+
 ## Funcionalidades
 
 *   **Registro de Jogadores:**
